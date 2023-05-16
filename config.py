@@ -8,19 +8,19 @@ collaborators = ['alexey.trekin@gmail.com'] #, 'mwstablo1@gmail.com', 'mwstablo2
 csv_name = 'mws'
 
 # Folder for csv files
-csv_folder = './'
+csv_folder = '../test_swiss_20230516/'
 
 # randomize the pairs in the first round or not
-random_pairs = False
+random_pairs = True
 
 # number of the fight areas to spread the fights to
 num_areas = 1
 
 # default HP for a fighter
-hp = 24
+hp = 35
 
 # the cap is maximum allowed amount of points given
-cap = -6
+cap = -9
 
 #
 pairing_function = 'swiss'

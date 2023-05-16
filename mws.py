@@ -2,7 +2,10 @@ import sys
 import random
 from typing import List
 from TM.tournament import Tournament, Fighter, TournamentRules, Round
-from TM.api import GoogleAPI, CsvApi
+from TM.api import (
+    # GoogleAPI,
+    CsvApi,
+)
 from TM.pairings import SwissPairings, RoundPairings
 
 import config

@@ -114,8 +114,10 @@ class Fighter:
         """
         if fight.fighter_1 == self.fighter_id:
             self.rating += fight.rating_score_1
+            self.warnings = fight.warnings_1
         elif fight.fighter_2 == self.fighter_id:
             self.rating += fight.rating_score_2
+            self.warnings = fight.warnings_2
         else:
             raise ValueError(f'Fighter {self.fighter_id} is not in the fight that is added')
         self.fights.append(fight)

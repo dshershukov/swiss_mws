@@ -38,8 +38,9 @@ class Storage:
 
         self.fields = {
             k: v for k, v in zip(
-                [x.strip() for x in 'RED, Red HP, Red score, Blue score, Blue HP, BLUE'.split(',')],
-                [str, int, int, int, int, str],
+                [x.strip() for x in 'RED, Red HP, Red score, Red warnings, '
+                                    'Blue warnings, Blue score, Blue HP, BLUE'.split(',')],
+                [str, int, int, int, int, int, int, str],
             )
         }
         self.fights: dict[int, Fight] = {}
@@ -127,8 +128,8 @@ class Storage:
                         raise ValueError('Bad input')
                     fights_[i] = Fight(
                         number=i,
-                        red=Fighter(row['RED'], row['Red HP'], row['Red score'], 0),
-                        blue=Fighter(row['BLUE'], row['Blue HP'], row['Blue score'], 0),
+                        red=Fighter(row['RED'], row['Red HP'], row['Red score'], row['Red warnings']),
+                        blue=Fighter(row['BLUE'], row['Blue HP'], row['Blue score'], row['Blue warnings']),
                     )
         except Exception as e:
             showerror(message='Не удалось прочитать файл')
@@ -188,7 +189,9 @@ class Storage:
             for fight in self.fights.values():
                 red = fight.red
                 blue = fight.blue
-                f.write(f'{red.name},{red.entry_hp},{red.hp_change},{blue.hp_change},{blue.entry_hp},{blue.name}\n')
+                f.write(
+                    f'{red.name},{red.entry_hp},{red.hp_change},{red.total_warnings},'
+                    f'{blue.total_warnings},{blue.hp_change},{blue.entry_hp},{blue.name}\n')
 
     def save_fight(self):
         # If displayed data is not valid, ask operator to fix it first

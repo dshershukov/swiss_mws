@@ -1,7 +1,8 @@
-from gui.secretary_ui import win
+from gui.gui import prepare_app
 
 
 def main():
+    win = prepare_app()
     win.mainloop()
 
 

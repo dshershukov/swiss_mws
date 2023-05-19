@@ -12,7 +12,7 @@ class TimerWidget:
 
         time_validation_command = self.frame.register(self._timer.text_validator)
         self.field = ttk.Entry(self.frame, textvariable=self._timer.text, validate='focusout',
-                               validatecommand=(time_validation_command, '%P', '%V'))
+                               validatecommand=(time_validation_command, '%P', '%V'), width=5)
 
         self.start_button = ttk.Button(self.frame, text='>', command=self._timer.start)
         self.pause_button = ttk.Button(self.frame, text='||', command=self._timer.pause)
@@ -23,7 +23,8 @@ class TimerWidget:
     def layout(self, column: int, row: int, columnspan: int = 1, rowspan: int = 1) -> None:
         self.frame.grid(column=column, row=row, columnspan=columnspan, rowspan=rowspan)
 
-        self.field.grid(column=0, row=0)
-        self.start_button.grid(column=1, row=0)
-        self.pause_button.grid(column=2, row=0)
-        self.reset_button.grid(column=3, row=0)
+        padding = {'padx': 5, 'pady': 5}
+        self.field.grid(column=0, row=0, **padding)
+        self.start_button.grid(column=1, row=0, **padding)
+        self.pause_button.grid(column=2, row=0, **padding)
+        self.reset_button.grid(column=3, row=0, **padding)

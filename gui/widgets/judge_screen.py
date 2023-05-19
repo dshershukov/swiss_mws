@@ -5,6 +5,13 @@ from ..common.fighter import ActiveFighter
 from ..common.timer import Timer
 
 
+TIMER_FONT = 'helvetica 144'
+LARGE_FONT = 'helvetica 72'
+NAME_FONT = 'helvetica 64'
+SMALL_FONT = 'helvetica 36'
+COLUMNS_WIDTH = 700  # Approximately 2/5 of screen width in pixels
+
+
 class JudgeScreen:
     def __init__(self, master: tk.Misc, red_fighter: ActiveFighter, blue_fighter: ActiveFighter, timer: Timer):
         self.red_fighter = red_fighter
@@ -15,27 +22,27 @@ class JudgeScreen:
         self.frame = ttk.Frame(master)
 
         timer_style = ttk.Style()
-        timer_style.configure('Timer.Label', font='helvetica 144', background='white')
+        timer_style.configure('Timer.Label', font=TIMER_FONT, background='white')
 
         red_name_style = ttk.Style()
-        red_name_style.configure('RedName.Label', font='helvetica 64', background='red')
+        red_name_style.configure('RedName.Label', font=NAME_FONT, background='red')
 
         blue_name_style = ttk.Style()
-        blue_name_style.configure('BlueName.Label', font='helvetica 64', background='blue')
+        blue_name_style.configure('BlueName.Label', font=NAME_FONT, background='blue')
 
         red_cell_style = ttk.Style()
-        red_cell_style.configure('RedCell.Label', font='helvetica 72', background='red')
+        red_cell_style.configure('RedCell.Label', font=LARGE_FONT, background='red')
         blue_cell_style = ttk.Style()
-        blue_cell_style.configure('BlueCell.Label', font='helvetica 72', background='blue')
+        blue_cell_style.configure('BlueCell.Label', font=LARGE_FONT, background='blue')
         white_cell_style = ttk.Style()
-        white_cell_style.configure('WhiteCell.Label', font='helvetica 36', background='white')
+        white_cell_style.configure('WhiteCell.Label', font=SMALL_FONT, background='white')
 
         self.timer_label = ttk.Label(self.frame, textvariable=self.timer.text, style='Timer.Label', anchor='center')
 
         self.red_name_label = ttk.Label(self.frame, textvariable=self.red_fighter.name, style='RedName.Label',
-                                        anchor='center', wraplength=700)
+                                        anchor='center', wraplength=COLUMNS_WIDTH)
         self.blue_name_label = ttk.Label(self.frame, textvariable=self.blue_fighter.name, style='BlueName.Label',
-                                         anchor='center', wraplength=700)
+                                         anchor='center', wraplength=COLUMNS_WIDTH)
         self.blank_label = ttk.Label(self.frame, text='', style='WhiteCell.Label', anchor='center')
 
         self.entry_hp_label = ttk.Label(self.frame, text='HP до боя', style='WhiteCell.Label', anchor='center')
@@ -88,7 +95,7 @@ class JudgeScreen:
         self.red_warnings_label.grid(column=red_column, row=4, sticky='nsew')
         self.blue_warnings_label.grid(column=blue_column, row=4, sticky='nsew')
 
-        self.frame.columnconfigure(0, weight=3, minsize=700)
+        self.frame.columnconfigure(0, weight=3, minsize=COLUMNS_WIDTH)
         self.frame.columnconfigure(1, weight=0)
-        self.frame.columnconfigure(2, weight=3, minsize=700)
+        self.frame.columnconfigure(2, weight=3, minsize=COLUMNS_WIDTH)
         self.frame.rowconfigure('all', weight=1)

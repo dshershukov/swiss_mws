@@ -69,16 +69,18 @@ class StorageWidget:
         top.columnconfigure(0, weight=1)
         top.rowconfigure(0, weight=1)
 
-        self.default_duration_label.grid(column=0, row=0, sticky='we')
-        self.default_duration_entry.grid(column=1, row=0, sticky='w')
-        self.directory_label.grid(column=0, row=1, sticky='we')
-        self.directory_entry.grid(column=1, row=1, sticky='we')
-        self.prefix_label.grid(column=0, row=2, sticky='we')
-        self.prefix_entry.grid(column=1, row=2, sticky='w')
-        self.round_number_label.grid(column=0, row=3, sticky='we')
-        self.round_number_entry.grid(column=1, row=3, sticky='w')
+        padding = {'padx': 2, 'pady': 2}
 
-        self.load_round_button.grid(column=0, row=4, sticky='w')
+        self.default_duration_label.grid(column=0, row=0, sticky='we', **padding)
+        self.default_duration_entry.grid(column=1, row=0, sticky='w', **padding)
+        self.directory_label.grid(column=0, row=1, sticky='we', **padding)
+        self.directory_entry.grid(column=1, row=1, sticky='we', **padding)
+        self.prefix_label.grid(column=0, row=2, sticky='we', **padding)
+        self.prefix_entry.grid(column=1, row=2, sticky='w', **padding)
+        self.round_number_label.grid(column=0, row=3, sticky='we', **padding)
+        self.round_number_entry.grid(column=1, row=3, sticky='w', **padding)
+
+        self.load_round_button.grid(column=0, row=4, sticky='w', **padding)
 
         self.table.grid(column=0, row=5, columnspan=2, sticky='nsew')
 
@@ -95,7 +97,7 @@ class FightLoadWidget:
         self.fight_label = ttk.Label(self.frame, text='Бой')
 
         self.fight_number_combobox = ttk.Combobox(self.frame, textvariable=self.storage.fight_number, values=['0'],
-                                                  state='readonly')
+                                                  state='readonly', width=12)
         self.storage.combobox = self.fight_number_combobox
 
         self.save_fight_button = ttk.Button(self.frame, text='Сохранить бой', command=self.storage.save_fight)
@@ -107,11 +109,12 @@ class FightLoadWidget:
         self.layout(column, row, columnspan, rowspan)
 
     def layout(self, column: int, row: int, columnspan: int = 1, rowspan: int = 1):
-        self.frame.grid(column=column, row=row, columnspan=columnspan, rowspan=rowspan)
+        self.frame.grid(column=column, row=row, columnspan=columnspan, rowspan=rowspan, padx=5, pady=5)
 
-        self.fight_label.grid(column=0, row=0)
-        self.fight_number_combobox.grid(column=1, row=0)
-        self.save_fight_button.grid(column=2, row=0)
-        self.load_fight_button.grid(column=3, row=0)
-        self.reset_fight_button.grid(column=4, row=0)
-        self.current_fight_label.grid(column=5, row=0)
+        padding = {'padx': 2, 'pady': 2}
+        self.fight_label.grid(column=0, row=0, **padding)
+        self.fight_number_combobox.grid(column=1, row=0, **padding)
+        self.save_fight_button.grid(column=1, row=1, **padding)
+        self.load_fight_button.grid(column=2, row=0, **padding)
+        self.reset_fight_button.grid(column=2, row=1, **padding)
+        # self.current_fight_label.grid(column=5, row=0)

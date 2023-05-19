@@ -3,10 +3,10 @@ import os
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from collections.abc import Callable
 from dataclasses import dataclass
 
 from tkinter.messagebox import (
+    askokcancel,
     showerror,
 )
 
@@ -212,6 +212,10 @@ class Storage:
             return
 
     def reset_fight(self):
+        decision = askokcancel(message='Вы уверены, что хотите сбросить введённые результаты боя?')
+        if not decision:
+            return
+
         self.red_fighter.set(self.current_fight.red)
         self.blue_fighter.set(self.current_fight.blue)
 

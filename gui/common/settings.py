@@ -1,13 +1,18 @@
 import csv
+import json
 import os
 import tkinter as tk
 import tkinter.ttk as ttk
 
+import requests
+
 from dataclasses import dataclass
+from datetime import datetime
 
 from tkinter.messagebox import (
     askokcancel,
     showerror,
+    showwarning,
 )
 
 from .fighter import (
@@ -31,6 +36,10 @@ class Storage:
         self.file_prefix = tk.StringVar(value='mws')
         self.round_number = tk.StringVar(value='1')
         self.fight_number = tk.IntVar(value=0)
+
+        self.server_url = tk.StringVar(value='')
+        self.server_token = tk.StringVar(value='')
+        self.upload_to_server = tk.IntVar()
 
         self.red_fighter = red_fighter
         self.blue_fighter = blue_fighter
@@ -193,6 +202,38 @@ class Storage:
                     f'{red.name},{red.entry_hp},{red.hp_change},{red.total_warnings},'
                     f'{blue.total_warnings},{blue.hp_change},{blue.entry_hp},{blue.name}\n')
 
+    def _upload_round_to_server(self):
+        message = {
+            'token': self.server_token.get(),
+            'round': int(self.round_number.get()),
+            'fights': [],
+            # Trust client to avoid relying on several queries to arrive in order.
+            # Need to make sure all clients have more or less correct time settings.
+            'ts': datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+        }
+        for fight in self.fights.values():
+            fight_data = {
+                'number': fight.number,
+                'red_name': fight.red.name,
+                'red_entry_hp': fight.red.entry_hp,
+                'red_hp_change': fight.red.hp_change,
+                'red_warnings': fight.red.total_warnings,
+                'blue_name': fight.blue.name,
+                'blue_entry_hp': fight.blue.entry_hp,
+                'blue_hp_change': fight.blue.hp_change,
+                'blue_warnings': fight.blue.total_warnings,
+            }
+            message['fights'].append(fight_data)
+
+        print(message)
+        print(self.server_url.get())
+        print(json.dumps(message))
+        response = requests.post(self.server_url.get(), json=message, timeout=4,
+                                 headers={'Content-type': 'application/json'})
+        print(response)
+        if response.status_code != 200:
+            raise RuntimeError()
+
     def save_fight(self):
         # If displayed data is not valid, ask operator to fix it first
         try:
@@ -210,6 +251,13 @@ class Storage:
         except Exception as e:
             showerror(message='Не получилось сохранить текуший раунд')
             return
+
+        if self.upload_to_server.get():
+            try:
+                self._upload_round_to_server()
+            except Exception as e:
+                print(e)
+                showwarning(message='Не получилось сохранить раунд на сервере')
 
     def reset_fight(self):
         decision = askokcancel(message='Вы уверены, что хотите сбросить введённые результаты боя?')
